@@ -9,6 +9,8 @@ CORS(app)
 
 
 administrador = {
+    "nombre": "Ingrid",
+    "apellido": "Perez",
     "nombreUsuario": "admin",
     "contrasena": "1234"
 }
@@ -36,9 +38,12 @@ def registroPaciente():
     if(existeUsuario(nombreUsuario)):
         return jsonify({'agregado': 0, 'mensaje': 'Nombre de usuario ya registrado'})
     contrasena = mensaje['contrasena']
+    if(contraSegura(contrasena)==False):
+        return jsonify({'valor': 0, 'mensaje': 'Contraseña con menos de 8 caracteres'})
     telefono = mensaje['telefono']
-    nuevoPaciente = Paciente(
-        nombre, apellido, fechaNacimiento, sexo, nombreUsuario, contrasena, telefono)
+    if(camposLLenos(nombre,apellido,fechaNacimiento,sexo,nombreUsuario,contrasena)==False):
+        return jsonify({'valor': 0, 'mensaje': 'Hay algún campo vacio'})
+    nuevoPaciente = Paciente(nombre, apellido, fechaNacimiento, sexo, nombreUsuario, contrasena, telefono)
     pacientes.append(nuevoPaciente)
     return jsonify({'agregado': 1, 'mensaje': 'Registro exitoso'})
 
@@ -76,6 +81,16 @@ def existeUsuario(nombreUsuario):
             return True
     return False
 
+def contraSegura(contrasena):
+    global pacientes
+    if len(contrasena) >= 8:
+        return True
+    return False
+
+def camposLLenos(nombre,apellido,fechaNacimiento,sexo,nombreUsuario,contrasena):
+    if(len(nombre) == 0 or len(apellido) == 0 or len(fechaNacimiento) == 0 or len(sexo) == 0 or len(nombreUsuario)==0 or len(contrasena)==0):
+        return False
+    return True
 
 if __name__ == '__main__':
     puerto = int(os.environ.get('PORT', 5000))
