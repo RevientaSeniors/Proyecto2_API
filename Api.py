@@ -36,16 +36,16 @@ def registroPaciente():
     sexo = mensaje['sexo']
     nombreUsuario = mensaje['nombreUsuario']
     if(existeUsuario(nombreUsuario)):
-        return jsonify({'agregado': 0, 'mensaje': 'Nombre de usuario ya registrado'})
+        return jsonify({'estado': 0, 'mensaje': 'Nombre de usuario ya registrado'})
     contrasena = mensaje['contrasena']
     if(contraSegura(contrasena)==False):
-        return jsonify({'valor': 0, 'mensaje': 'Contraseña con menos de 8 caracteres'})
+        return jsonify({'estado': 0, 'mensaje': 'Contraseña con menos de 8 caracteres'})
     telefono = mensaje['telefono']
     if(camposLLenos(nombre,apellido,fechaNacimiento,sexo,nombreUsuario,contrasena)==False):
-        return jsonify({'valor': 0, 'mensaje': 'Hay algún campo vacio'})
+        return jsonify({'estado': 0, 'mensaje': 'Hay algún campo vacio'})
     nuevoPaciente = Paciente(nombre, apellido, fechaNacimiento, sexo, nombreUsuario, contrasena, telefono)
     pacientes.append(nuevoPaciente)
-    return jsonify({'agregado': 1, 'mensaje': 'Registro exitoso'})
+    return jsonify({'estado': 1, 'mensaje': 'Registro exitoso'})
 
 
 @app.route('/mostrar_pacientes', methods=['GET'])
