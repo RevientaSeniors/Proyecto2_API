@@ -59,14 +59,15 @@ def mostrarPacientes():
     return jsonify(jsonPacientes)
 
 @app.route('/datos_paciente', methods=['GET'])
-def datosPaciente(nombreUsuario):
+def datosPaciente():
     global pacientes
+    global nU
     dPaciente
     for i in pacientes:
-        if(nombreUsuario == i.nombreUsuario):
+        if(nU == i.nombreUsuario):
             dPaciente.append(i.get_json())                       
             return jsonify(dPaciente)
-
+        return jsonify({'estado': 0})
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -76,8 +77,8 @@ def login():
     if not existeUsuario(nombreUsuario):
         return jsonify({'estado': 0, 'mensaje': 'No existe un usuario con estas credenciales'})
     if nombreUsuario == administrador['nombreUsuario'] and contrasena == administrador['contrasena']:
+        nU = nombreUsuario
         return jsonify({'estado': 1, 'mensaje': 'Login exitoso'})
-        datosPaciente(nombreUsuario)
     for paciente in pacientes:
         if nombreUsuario == paciente.nombreUsuario and contrasena == paciente.contrasena:
             return jsonify({'estado': 1, 'mensaje': 'Login exitoso'})
