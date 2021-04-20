@@ -77,7 +77,6 @@ def login():
     if not existeUsuario(nombreUsuario):
         return jsonify({'estado': 0, 'mensaje': 'No existe un usuario con estas credenciales'})
     if nombreUsuario == administrador['nombreUsuario'] and contrasena == administrador['contrasena']:
-        nU = nombreUsuario
         return jsonify({'estado': 1, 'mensaje': 'Login exitoso'})
     for paciente in pacientes:
         if nombreUsuario == paciente.nombreUsuario and contrasena == paciente.contrasena:
