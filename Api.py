@@ -16,7 +16,7 @@ administrador = {
 }
 
 pacientes = []
-
+uD=""
 
 @app.route('/', methods=['GET'])
 def principal():
@@ -56,18 +56,37 @@ def mostrarPacientes():
         json_pacientes.append(paciente.get_json())
     return jsonify(json_pacientes)
 
+@app.route('/usuario_dentro', methods=['GET'])
+def usuarioDentro():
+    global pacientes
+    global uD
+    jsonPaciente=""
+
+    for i in pacientes:
+        if uD == i.nombreUsuario:
+            jsonPaciente.append(i.get_json())
+            return jsonify(jsonPaciente)
+
+    if uD == administrador['nombreUsuario']:
+        return jsonify(administrador) 
+        
+    return jsonify({'aviso': 'error'})      
+             
 
 @app.route('/login', methods=['GET'])
 def login():
     global pacientes
+    global uD
     nombreUsuario = request.args.get('nombreUsuario')
     contrasena = request.args.get('contrasena')
     if not existeUsuario(nombreUsuario):
         return jsonify({'estado': 0, 'mensaje': 'No existe un usuario con estas credenciales'})
     if nombreUsuario == administrador['nombreUsuario'] and contrasena == administrador['contrasena']:
+        uD=nombreUsuario
         return jsonify({'estado': 1, 'mensaje': 'Login exitoso'})
     for paciente in pacientes:
         if nombreUsuario == paciente.nombreUsuario and contrasena == paciente.contrasena:
+            uD = nombreUsuario
             return jsonify({'estado': 1, 'mensaje': 'Login exitoso'})
     return jsonify({'estado': 0, 'mensaje': 'Contraseña incorrecta'})  
     
