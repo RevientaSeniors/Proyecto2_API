@@ -16,7 +16,6 @@ administrador = {
 }
 
 pacientes = []
-nU = ""
 
 
 
@@ -57,17 +56,6 @@ def mostrarPacientes():
     for paciente in pacientes:
         jsonPacientes.append(paciente.get_json())
     return jsonify(jsonPacientes)
-
-@app.route('/datos_paciente', methods=['GET'])
-def datosPaciente():
-    global pacientes
-    global nU
-    dPaciente
-    for i in pacientes:
-        if(nU == i.nombreUsuario):
-            dPaciente.append(i.get_json())                       
-            return jsonify(dPaciente)
-        return jsonify({'estado': 0})
 
 @app.route('/login', methods=['GET'])
 def login():
